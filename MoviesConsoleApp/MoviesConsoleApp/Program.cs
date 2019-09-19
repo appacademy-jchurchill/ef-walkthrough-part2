@@ -21,11 +21,28 @@ namespace MoviesConsoleApp
 
                 var movieRepository = new MovieRepository(context);
 
-                List<Movie> movies = movieRepository.GetList();
-                movies.ForEach(m => Console.WriteLine(m));
+                Console.WriteLine("Movies sorted by ID...");
+                movieRepository.GetList(m => m.Id)
+                    .ForEach(m => Console.WriteLine(m.Title));
+
+                Console.WriteLine("Movies sorted by Title...");
+                movieRepository.GetList(m => m.Title)
+                    .ForEach(m => Console.WriteLine(m.Title));
+
+                Console.WriteLine("Movies sorted by ReleaseYear...");
+                movieRepository.GetList(m => m.ReleaseYear)
+                    .ForEach(m => Console.WriteLine(m.Title));
+
+                Console.WriteLine("Movies sorted by Title, ReleaseYear DESC...");
+                movieRepository.GetList(q => 
+                    q.OrderByDescending(m => m.ReleaseYear).ThenBy(m => m.Title))
+                    .ForEach(m => Console.WriteLine(m.Title));
 
 
+                //var movieRepository = new MovieRepository(context);
 
+                //List<Movie> movies = movieRepository.GetList();
+                //movies.ForEach(m => Console.WriteLine(m));
 
                 //var directors = context.Directors
                 //    .Include(d => d.Movies)
@@ -50,7 +67,6 @@ namespace MoviesConsoleApp
                 //    // {director name} (list of movie titles)
                 //    Console.WriteLine($"{d.Name} ({movieTitlesDisplay})");
                 //});
-
 
                 //var movieRepository = new MovieRepository(context);
 

@@ -28,15 +28,9 @@ namespace Shared.Data
             return context.Movies
                 .Include(m => m.Director)
                 .Include(m => m.Actors)
-                .OrderBy(m => m.Title)
+                .OrderBy(m => m.ReleaseYear)
+                .ThenBy(m => m.Title)
                 .ToList();
-        }
-
-        public Movie Get(int id)
-        {
-            return context.Movies
-                .Where(m => m.Id == id)
-                .SingleOrDefault();
         }
 
         //public List<Movie> GetList(Expression<Func<Movie, object>> orderBy)
@@ -46,11 +40,30 @@ namespace Shared.Data
         //        .ToList();
         //}
 
-        //public Movie Get(Expression<Func<Movie, bool>> whereBy)
-        //{
-        //    return context.Movies
-        //        .Where(whereBy)
-        //        .SingleOrDefault();
-        //}
+        public List<Movie> GetList<TKeyType>(Expression<Func<Movie, TKeyType>> orderBy)
+        {
+            return context.Movies
+                .OrderBy(orderBy)
+                .ToList();
+        }
+
+        public List<Movie> GetList(Func<IQueryable<Movie>, IOrderedQueryable<Movie>> orderBy)
+        {
+            return orderBy(context.Movies).ToList();
+        }
+
+        public Movie Get(int id)
+        {
+            return context.Movies
+                .Where(m => m.Id == id)
+                .SingleOrDefault();
+        }
+
+        public Movie Get(Expression<Func<Movie, bool>> whereBy)
+        {
+            return context.Movies
+                .Where(whereBy)
+                .SingleOrDefault();
+        }
     }
 }
