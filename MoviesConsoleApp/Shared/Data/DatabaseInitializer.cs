@@ -13,8 +13,33 @@ namespace Shared.Data
     {
         protected override void Seed(Context context)
         {
-            context.Movies.Add(new Movie("A New Hope"));
-            context.Movies.Add(new Movie("Empire Strikes Back"));
+            var georgeLucas = new Director()
+            {
+                Name = "George Lucas"
+            };
+            context.Directors.Add(georgeLucas);
+
+            var markHamill = new Actor()
+            {
+                Name = "Mark Hamill"
+            };
+            var carrieFisher = new Actor()
+            {
+                Name = "Carrie Fisher"
+            };
+            context.Actors.Add(markHamill);
+            context.Actors.Add(carrieFisher);
+
+            var aNewHope = new Movie("A New Hope", georgeLucas);
+            aNewHope.Actors.Add(markHamill);
+            aNewHope.Actors.Add(carrieFisher);
+
+            var empireStrikesBack = new Movie("Empire Strikes Back", georgeLucas);
+            empireStrikesBack.Actors.Add(markHamill);
+            empireStrikesBack.Actors.Add(carrieFisher);
+
+            context.Movies.Add(aNewHope);
+            context.Movies.Add(empireStrikesBack);
 
             context.SaveChanges();
         }
